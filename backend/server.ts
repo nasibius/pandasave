@@ -178,7 +178,8 @@ async function startServer() {
       db.prepare('INSERT INTO families (id, name, email, passwordHash, parentPin, createdAt, emailVerified, verificationToken) VALUES (?, ?, ?, ?, ?, ?, 0, ?)')
         .run(familyId, name, email, hash, pinHash, Date.now(), verificationToken);
 
-      const verifyLink = `${process.env.APP_URL || 'http://localhost:3000'}/api/auth/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
+      const backendUrl = process.env.BACKEND_URL || process.env.APP_URL || 'http://localhost:3000';
+      const verifyLink = `${backendUrl}/api/auth/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
       
       const mailOptions = {
         from: `"PandaSave" <${process.env.EMAIL_USER || 'noreply@pandasave.com'}>`,
@@ -214,7 +215,8 @@ async function startServer() {
       }
 
       db.prepare('UPDATE families SET emailVerified = 1, verificationToken = NULL WHERE id = ?').run(family.id);
-      res.redirect('/?verified=true');
+      const frontendUrl = process.env.FRONTEND_URL || process.env.APP_URL || 'http://localhost:3000';
+      res.redirect(`${frontendUrl}/?verified=true`);
     } catch (e) {
       console.error('Verification error:', e);
       res.status(500).send('Verification failed due to a server error.');
@@ -273,7 +275,8 @@ async function startServer() {
       db.prepare('UPDATE families SET resetToken = ?, resetTokenExpiry = ? WHERE id = ?')
         .run(resetTokenHash, resetTokenExpiry, family.id);
 
-      const resetLink = `${process.env.APP_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
+      const frontendUrl = process.env.FRONTEND_URL || process.env.APP_URL || 'http://localhost:3000';
+      const resetLink = `${frontendUrl}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
       
       const mailOptions = {
         from: `"PandaSave" <${process.env.EMAIL_USER || 'noreply@pandasave.com'}>`,
@@ -341,7 +344,8 @@ async function startServer() {
       db.prepare('UPDATE families SET pinResetToken = ?, pinResetTokenExpiry = ? WHERE id = ?')
         .run(resetTokenHash, resetTokenExpiry, familyId);
 
-      const resetLink = `${process.env.APP_URL || 'http://localhost:3000'}/reset-pin?token=${resetToken}&familyId=${encodeURIComponent(familyId)}`;
+      const frontendUrl = process.env.FRONTEND_URL || process.env.APP_URL || 'http://localhost:3000';
+      const resetLink = `${frontendUrl}/reset-pin?token=${resetToken}&familyId=${encodeURIComponent(familyId)}`;
       
       const mailOptions = {
         from: `"PandaSave" <${process.env.EMAIL_USER || 'noreply@pandasave.com'}>`,
