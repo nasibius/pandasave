@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2D5A27;
+  --color-secondary: #A8D672;
+  --color-accent: #F27D26;
+  --color-bg: #F9FBF9;
+  --color-card: #FFFFFF;
+  --color-text: #2C3E50;
+  --color-muted: #7F8C8D;
+  --color-line: #E0E4E1;
+}
+
+@layer base {
+  :root {
+    --primary: #2D5A27;
+    --secondary: #A8D672;
+    --accent: #F27D26;
+    --bg: #F9FBF9;
+    --card: #FFFFFF;
+    --card-alt: #FDFDFD;
+    --text: #2C3E50;
+    --muted: #7F8C8D;
+    --line: #E0E4E1;
+    --primary-light: #EEF7EE;
+    --danger-light: #FFF0F0;
+    --progress-bg: #F0F2F0;
+    --disabled-bg: #EEEEEE;
+  }
+  .dark {
+    --primary: #A8D672;
+    --secondary: #1F3F1C;
+    --accent: #F27D26;
+    --bg: #0C120D;
+    --card: #151F17;
+    --card-alt: #1B291E;
+    --text: #EEF5EF;
+    --muted: #8AA392;
+    --line: #293B2C;
+    --primary-light: #1A3018; /* deep green */
+    --danger-light: #3D1212; /* deep red */
+    --progress-bg: #223326;
+    --disabled-bg: #1B291E;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+}
