@@ -60,7 +60,9 @@ db.exec(`
     resetToken TEXT,
     resetTokenExpiry INTEGER,
     pinResetToken TEXT,
-    pinResetTokenExpiry INTEGER
+    pinResetTokenExpiry INTEGER,
+    emailVerified INTEGER DEFAULT 0,
+    verificationToken TEXT
   );
   
   CREATE TABLE IF NOT EXISTS children (
@@ -107,6 +109,18 @@ db.exec(`
     FOREIGN KEY(childId) REFERENCES children(id)
   );
 `);
+
+// Database Migrations
+try {
+  db.prepare("ALTER TABLE families Add COLUMN emailVerified INTEGER DEFAULT 0").run();
+} catch (e) {
+  // Column likely already exists
+}
+try {
+  db.prepare("ALTER TABLE families ADD COLUMN verificationToken TEXT").run();
+} catch (e) {
+  // Column likely already exists
+}
 
 // Authentication Middleware
 const authenticateToken = (req: any, res: any, next: any) => {
